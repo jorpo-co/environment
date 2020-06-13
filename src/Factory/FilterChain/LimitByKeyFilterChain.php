@@ -19,10 +19,10 @@ class LimitByKeyFilterChain implements Filter
             if ($key === $this->key) {
                 $environment[$key] = $this->chain->filter([
                     $key => $value,
-                ], $chain);
+                ], $this->chain);
             }
         }
 
-        return $environment;
+        return $chain->filter($environment, $chain);
     }
 }
