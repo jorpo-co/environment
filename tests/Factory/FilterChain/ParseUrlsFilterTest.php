@@ -9,9 +9,9 @@ class ParseUrlsFilterTest extends TestCase
     /**
      * @dataProvider dataProvider
      */
-    public function testThatUrlsAreParsed(string $key, array $fixture, array $expected)
+    public function testThatUrlsAreParsed(array $fixture, array $expected)
     {
-        $subject = new ParseUrlsFilter($key);
+        $subject = new ParseUrlsFilter;
         $result = $subject->filter($fixture, new NullFilter);
 
         $this->assertSame($expected, $result);
@@ -21,7 +21,6 @@ class ParseUrlsFilterTest extends TestCase
     {
         return [
             [
-                'url',
                 ['something_url' => 'https://username:password@hostname:9090/path?arg=value#anchor'],
                 ['something_url' => [
                     'scheme' => 'https',
@@ -33,9 +32,9 @@ class ParseUrlsFilterTest extends TestCase
                     'query' => 'arg=value',
                     'fragment' => 'anchor',
                     'raw' => 'https://username:password@hostname:9090/path?arg=value#anchor',
-                ]
-            ], [
-                'uri',
+                ]]
+            ],
+            [
                 ['ELSE_URI' => '//hostname:9090/path?googleguy=googley'],
                 ['ELSE_URI' => [
                     'host' => 'hostname',
@@ -44,19 +43,22 @@ class ParseUrlsFilterTest extends TestCase
                     'query' => 'googleguy=googley',
                     'raw' => '//hostname:9090/path?googleguy=googley',
                 ]]
-            ], [
-                'urn',
+            ],
+            [
                 ['other_urn' => 'urn:uuid:6e8bc430-9c3a-11d9-9669-0800200c9a66'],
                 ['other_urn' => [
                     'scheme' => 'urn',
                     'path' => 'uuid:6e8bc430-9c3a-11d9-9669-0800200c9a66',
                     'raw' => 'urn:uuid:6e8bc430-9c3a-11d9-9669-0800200c9a66',
                 ]]
-            ], [
-                'url',
+            ],
+            [
                 ['snaaake!' => 'badger'],
-                ['snaaake!' => 'badger']
-            ]]
+                ['snaaake!' => [
+                    'path' => 'badger',
+                    'raw' => 'badger'
+                ]]
+            ]
         ];
     }
 }

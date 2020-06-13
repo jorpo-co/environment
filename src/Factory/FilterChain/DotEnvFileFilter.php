@@ -2,9 +2,10 @@
 
 namespace Jorpo\Environment\Factory\FilterChain;
 
+use SplFileInfo;
+use Throwable;
 use function array_replace;
 use josegonzalez\Dotenv\Loader;
-use SplFileInfo;
 
 class DotEnvFileFilter implements Filter
 {
@@ -19,6 +20,12 @@ class DotEnvFileFilter implements Filter
     {
         $loader = new Loader((string) $this->file);
 
-        return $chain->filter(array_replace($environment, $loader->parse()->toArray()), $chain);
+        try {
+            $filtered = $loader->parse()->toArray();
+        } catch (Throwable $e) {
+            $filtered = [];
+        }
+
+        return $chain->filter(array_replace($environment, $filtered), $chain);
     }
 }

@@ -17,7 +17,7 @@ class RecursiveFilterChain implements Filter
     {
         foreach ($environment as $key => $value) {
             if (is_array($value)) {
-                $environment[$key] = $this->chain->filter($value, $chain);
+                $environment[$key] = $this->chain->filter($value, $this->chain);
             }
         }
 

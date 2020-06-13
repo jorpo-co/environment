@@ -9,7 +9,7 @@ class FileObjectsFilterTest extends TestCase
 {
     public function testThatFileObjectsAreCreated()
     {
-        $subject = new FileObjectsFilter('file');
+        $subject = new FileObjectsFilter;
         $result = $subject->filter(['something_file' => 'fixtures/something_file.txt'], new NullFilter);
 
         $object = $result['something_file'];
@@ -30,11 +30,15 @@ class FileObjectsFilterTest extends TestCase
         $this->assertSame('fixtures', $object->getPathName());
     }
 
-    public function testThatFilterIgnoresOtherKeys()
+    public function testThatFilterWillPutAnyStringIntoSplFileObject()
     {
-        $subject = new FileObjectsFilter('path');
-        $result = $subject->filter($fixture = ['badger' => 'mushroom'], new NullFilter);
+        $subject = new FileObjectsFilter;
+        $result = $subject->filter(['something' => 'badgers'], new NullFilter);
 
-        $this->assertSame($fixture, $result);
+        $object = $result['something'];
+        $this->assertInstanceOf(SplFileInfo::class, $object);
+
+        $this->assertSame('badgers', $object->getFilename());
+        $this->assertSame('', $object->getPath());
     }
 }

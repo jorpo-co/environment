@@ -30,4 +30,15 @@ class DotEnvFileFilterTest extends TestCase
 
         $this->assertSame('badger', $filtered['MUSHROOM']);
     }
+
+    public function testThatFilterWillIgnoreMissingFiles()
+    {
+        $subject = new DotEnvFileFilter(
+            new SplFileInfo('cabbages'),
+        );
+
+        $filtered = $subject->filter([], new NullFilter);
+
+        $this->assertEmpty($filtered);
+    }
 }
