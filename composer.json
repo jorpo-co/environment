@@ -13,9 +13,9 @@
         "bin-dir": "bin"
     },
     "require": {
-        "php": "^7.4",
         "josegonzalez/dotenv": "^3.2",
         "myclabs/deep-copy": "^1.9",
+        "php": "^7.4 || ^8.0",
         "php-ds/php-ds": "^1.2"
     },
     "autoload": {

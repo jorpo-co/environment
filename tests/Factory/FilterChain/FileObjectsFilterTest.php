@@ -7,27 +7,35 @@ use PHPUnit\Framework\TestCase;
 
 class FileObjectsFilterTest extends TestCase
 {
+    private const FIXTURES = __DIR__.'/../../fixtures';
+
     public function testThatFileObjectsAreCreated()
     {
+        $path = realpath(self::FIXTURES);
+
         $subject = new FileObjectsFilter;
-        $result = $subject->filter(['something_file' => 'fixtures/something_file.txt'], new NullFilter);
+        $result = $subject->filter(['something_file' => $path.'/something_file.txt'], new NullFilter);
 
         $object = $result['something_file'];
         $this->assertInstanceOf(SplFileInfo::class, $object);
 
+        $this->assertTrue($object->isFile());
         $this->assertSame('something_file.txt', $object->getFilename());
-        $this->assertSame('fixtures', $object->getPath());
+        $this->assertSame($path, $object->getPath());
     }
 
     public function testThatPathObjectsAreCreated()
     {
-        $subject = new FileObjectsFilter('path');
-        $result = $subject->filter(['SOMETHING_PATH' => 'fixtures'], new NullFilter);
+        $path = realpath(self::FIXTURES);
+
+        $subject = new FileObjectsFilter;
+        $result = $subject->filter(['SOMETHING_PATH' => $path], new NullFilter);
 
         $object = $result['SOMETHING_PATH'];
         $this->assertInstanceOf(SplFileInfo::class, $object);
 
-        $this->assertSame('fixtures', $object->getPathName());
+        $this->assertTrue($object->isDir());
+        $this->assertSame($path, $object->getPathName());
     }
 
     public function testThatFilterWillPutAnyStringIntoSplFileObject()
@@ -38,6 +46,8 @@ class FileObjectsFilterTest extends TestCase
         $object = $result['something'];
         $this->assertInstanceOf(SplFileInfo::class, $object);
 
+        $this->assertFalse($object->isDir());
+        $this->assertFalse($object->isFile());
         $this->assertSame('badgers', $object->getFilename());
         $this->assertSame('', $object->getPath());
     }

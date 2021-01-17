@@ -3,9 +3,6 @@
 namespace Jorpo\Environment\Factory\FilterChain;
 
 use function parse_url;
-use function substr_compare;
-use function strtolower;
-use function strlen;
 
 class ParseUrlsFilter implements Filter
 {
