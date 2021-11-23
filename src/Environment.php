@@ -3,8 +3,9 @@
 namespace Jorpo\Environment;
 
 use Ds\Map;
-use Traversable;
 use IteratorAggregate;
+use OutOfBoundsException;
+use Traversable;
 use function DeepCopy\deep_copy;
 use function is_array;
 
@@ -17,14 +18,18 @@ final class Environment implements IteratorAggregate
         $this->contents = new Map($this->mapNestedArrays($contents));
     }
 
-    public function __get(string $name)
+    public function __get(string $name): mixed
     {
-        $value = $this->contents->get($name, null);
+        try {
+            $value = $this->contents->get($name);
+        } catch (OutOfBoundsException $error) {
+            return null;
+        }
 
         return is_a($value, Environment::class) ? $value : deep_copy($value);
     }
 
-    public function __set(string $name, $value)
+    public function __set(string $name, mixed $value): void
     {
         if (!$this->contents->hasKey($name)) {
             $contents = $this->mapNestedArrays([$name => $value]);
@@ -32,7 +37,7 @@ final class Environment implements IteratorAggregate
         }
     }
 
-    public function __unset(string $name)
+    public function __unset(string $name): void
     {
     }
 

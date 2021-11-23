@@ -26,7 +26,7 @@ class KeyContainsFilterChain implements Filter
         return $chain->filter($environment, $chain);
     }
 
-    private function contains(string $haystack, string $needle)
+    private function contains(string $haystack, string $needle): bool
     {
         return strpos(strtolower($haystack), strtolower($needle)) !== false;
     }

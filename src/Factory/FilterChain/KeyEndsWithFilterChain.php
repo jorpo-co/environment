@@ -26,7 +26,7 @@ class KeyEndsWithFilterChain implements Filter
         return $chain->filter($environment, $chain);
     }
 
-    private function endsWith(string $haystack, string $needle)
+    private function endsWith(string $haystack, string $needle): bool
     {
         return substr_compare(strtolower($haystack), strtolower($needle), -strlen($needle)) === 0;
     }

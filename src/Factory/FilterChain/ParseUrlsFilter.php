@@ -9,7 +9,7 @@ class ParseUrlsFilter implements Filter
     public function filter(array $environment, Filter $chain): array
     {
         foreach ($environment as $key => $value) {
-            $environment[$key] = parse_url($value) ?? $value;
+            $environment[$key] = parse_url($value) ?: $value;
             $environment[$key]['raw'] = $value;
         }
 

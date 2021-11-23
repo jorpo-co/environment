@@ -32,7 +32,7 @@ class FilterChain implements Filter
         return $filtered;
     }
 
-    public function pushFilter(Filter $filter)
+    public function pushFilter(Filter $filter): void
     {
         $this->filters->push($filter);
     }

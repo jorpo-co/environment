@@ -4,9 +4,9 @@ namespace Jorpo\Environment\Factory\FilterChain;
 
 class ChangeValueFilter implements Filter
 {
-    private $newValue;
+    private mixed $newValue;
 
-    public function __construct($newValue)
+    public function __construct(mixed $newValue)
     {
         $this->newValue = $newValue;
     }
